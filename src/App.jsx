@@ -10,12 +10,17 @@ const App = () => {
     title: '',
     author: '',
     url: '',
-    likes: 0,
+
   })
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [errorMessage, setErrorMessage] = useState(null)
+  const [Message, setMessage] = useState(null)
   const [user, setUser] = useState(null) 
+
+  useEffect(() => {
+    console.log(errorMessage); // Log error message whenever it changes
+  }, [errorMessage]);
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -44,8 +49,8 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-    } catch (exception) {
-      setErrorMessage('wrong credentials')
+    } catch (error) {
+      setErrorMessage("wrong username or password")
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -66,11 +71,14 @@ const App = () => {
       .create(newBlog)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
+        setMessage(`a new blog ${newBlog.title} by ${newBlog.author} added`)
+          setTimeout(() => {
+          setMessage(null)
+           }, 5000)
         setNewBlog({
           title: '',
           author: '',
           url: '',
-          likes: 0,
         })
       })
   }
@@ -86,7 +94,7 @@ const App = () => {
   const BlogForm = () => (
     <form onSubmit={addBlog}>
       <div>
-      title
+      title:
       <input
         type="text"
         value={newBlog.title}
@@ -95,7 +103,7 @@ const App = () => {
         />
         </div>
         <div>
-      author
+      author:
       <input
       type="text"
       value={newBlog.author}
@@ -104,20 +112,11 @@ const App = () => {
         />
         </div>
         <div>
-      url
+      url:
       <input
         type="text"
         value={newBlog.url}
         name="url"
-        onChange={handleInputChange}
-        />
-        </div>
-        <div>
-      likes
-      <input
-        type="number"
-        value={newBlog.likes}
-        name="likes"
         onChange={handleInputChange}
         />
         </div>
@@ -127,10 +126,10 @@ const App = () => {
   
 
   if (user === null) {
-    <Notification message={errorMessage} />
     return (
-      <div>
+      <div> 
         <h2>Log in to application</h2>
+        <Notification message={errorMessage} />
         <form onSubmit={handleLogin}>
           <div>
             username
@@ -159,10 +158,12 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={Message}/>
       {user.name} logged in <button type="submit" onClick={handleLogout}>logout</button>
-      <p></p>
+      
       <h2>create new</h2>
       {BlogForm()}
+      <p></p>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
