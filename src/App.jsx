@@ -66,6 +66,7 @@ const App = () => {
       blogService
       .create(blogObject)
       .then(returnedBlog => {
+
       setBlogs(blogs.concat(returnedBlog))
       setMessage(`a new blog ${blogObject.title} by ${blogObject.author} added`)
         setTimeout(() => {
@@ -88,9 +89,7 @@ const App = () => {
       </div>
     )
   }
-
   
-
     return (
       <div> 
 
