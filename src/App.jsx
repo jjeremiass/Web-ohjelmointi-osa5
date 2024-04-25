@@ -84,8 +84,6 @@ const App = () => {
           }, 5000)
       })
   }
-  
-
 
   const loginForm = () => {
     return (
@@ -115,9 +113,13 @@ const App = () => {
   <Togglable buttonLabel="create new blog">
         <BlogForm createBlog={addBlog}/>
   </Togglable>
-    {blogs.map(blog =>
+  <div>
+  {blogs
+    .sort((a,b)=>b.likes - a.likes)
+    .map(blog =>
         <Blog key={blog.id} blog={blog} handleLike={handleLike} />
       )}
+  </div>
   </div>
 }
 </div>
