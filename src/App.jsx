@@ -16,6 +16,7 @@ const App = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
+    console.log("Fetching blogs...")
     blogService
       .getAll()
       .then(blogs =>
@@ -30,7 +31,7 @@ const App = () => {
       setUser(user)
       blogService.setToken(user.token)
     }
-  })
+  },[])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -61,6 +62,16 @@ const App = () => {
     setPassword('')
   }
 
+  const handleLike = (blogObject) => {
+    const updatedBlog = { ...blogObject, likes: blogObject.likes + 1 }
+    blogService
+    .update(blogObject.id,updatedBlog)
+    .then(returnedBlog => {
+      setBlogs(blogs.map(blog =>
+        blog.id === returnedBlog.id ? returnedBlog : blog
+      ))})
+  }
+
   
   const addBlog = (blogObject) => {
       blogService
@@ -74,6 +85,7 @@ const App = () => {
       })
   }
   
+
 
   const loginForm = () => {
     return (
@@ -104,7 +116,7 @@ const App = () => {
         <BlogForm createBlog={addBlog}/>
   </Togglable>
     {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLike={handleLike} />
       )}
   </div>
 }
