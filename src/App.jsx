@@ -72,6 +72,13 @@ const App = () => {
       ))})
   }
 
+  const handleDelete = (blogObject) => {
+    blogService
+    .remove(blogObject.id) 
+    .then(()=>{
+      setBlogs(blogs.filter(blog => blog.id != blogObject.id ))
+  })}
+
   
   const addBlog = (blogObject) => {
       blogService
@@ -117,7 +124,7 @@ const App = () => {
   {blogs
     .sort((a,b)=>b.likes - a.likes)
     .map(blog =>
-        <Blog key={blog.id} blog={blog} handleLike={handleLike} />
+        <Blog key={blog.id} blog={blog} handleLike={handleLike} handleDelete={handleDelete} user={user} />
       )}
   </div>
   </div>
