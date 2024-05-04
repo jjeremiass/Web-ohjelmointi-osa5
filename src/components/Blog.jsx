@@ -13,7 +13,7 @@ const Blog = ({ blog, handleLike, user, handleDelete }) => {
   
 
   return(
-  <div>
+  <div className="blog">
     {blog.title} {blog.author} {blog.likes} 
     <button onClick={()=>handleLike(blog)}>like</button>
     {deleteButton(blog,user,handleDelete)}
