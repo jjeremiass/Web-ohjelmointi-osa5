@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from 'prop-types'
 
 const deleteButton = (blog , user, handleDelete) =>{
   if(blog.user.username === user.username){
@@ -19,5 +20,13 @@ const Blog = ({ blog, handleLike, user, handleDelete }) => {
   </div> 
   ) 
 }
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  handleLike: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  handleDelete: PropTypes.func.isRequired
+}
+
 
 export default Blog
